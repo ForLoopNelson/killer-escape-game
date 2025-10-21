@@ -2,7 +2,7 @@
 
 # Killer Escape Memory card game
 
-## Memorize the tiles containing doors and avoid the killers from Horror movies. Find three doors to escape, or get caught if you find three villains!
+## Find two doors to escape. Match two tiles with a horror Villain (Jason, Freddy, Pinhead, or Michael Myers) and be captured!
 
 ### Tasks:
 -- Fix mobile design
