@@ -111,7 +111,7 @@ function shuffleCard() {
   matched = 0;
   disableDeck = false;
   cardOne = cardTwo = "";
-  let arr = ['door', 'freddy', 'mm', 'jason', 'pinhead', 'door', 'freddy', 'mm', 'jason', 'pinhead', 'door', 'door'];
+  let arr = ['door', 'freddy', 'mm', 'jason', 'pinhead', 'pennywise', 'freddy', 'mm', 'jason', 'pinhead', 'door', 'pennywise'];
   arr.sort(() => Math.random() > 0.5 ? 1 : -1);
   cards.forEach((card, i) => {
     card.classList.remove("flip");
