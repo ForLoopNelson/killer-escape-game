@@ -1,8 +1,8 @@
 const cards = document.querySelectorAll(".card");
-let matched = 0;
+let  killerCount = 0;
+let doorKey = 0
 let moveCounter = 0;
-let numStars = 3; //not used yet
-let maxMoves = 18; 
+let maxMoves = 12; 
 let timer = {
   seconds: 0,
   minutes: 0,
@@ -81,11 +81,15 @@ function flipCard({ target: clickedCard }) {
 }
 
 function matchCards(img1, img2) {
-  if (img1 === img2) {
-    matched++;
-    if (matched == 6) {
+  
+  const name1 = img1.split("/").pop().split(".")[0]; // e.g. "door"
+  const name2 = img2.split("/").pop().split(".")[0]; // e.g. "key"
+  console.log(name1,name2)
+  if (name1 === name2) {
+    killerCount++;
+    if (killerCount == 2) {
       setTimeout(() => {
-        alert("You won!");
+        alert(`You got caught by ${name1}!`);
         resetGame();
       }, 500);
     }
@@ -93,7 +97,23 @@ function matchCards(img1, img2) {
     cardTwo.removeEventListener("click", flipCard);
     cardOne = cardTwo = "";
     disableDeck = false;
-  } else {
+  } else if (
+    (name1 === "door" && name2 === "key") ||
+    (name1 === "key" && name2 === "door")
+  ) {
+    doorKey++;
+    if (doorKey == 1) {
+      setTimeout(() => {
+        alert(`You found the key and unlocked the door. You have Escaped!!`);
+        resetGame();
+      }, 500);
+    }
+    cardOne.removeEventListener("click", flipCard);
+    cardTwo.removeEventListener("click", flipCard);
+    cardOne = cardTwo = "";
+    disableDeck = false;
+  }
+  else {
     setTimeout(() => {
       cardOne.classList.add("shake");
       cardTwo.classList.add("shake");
@@ -108,10 +128,11 @@ function matchCards(img1, img2) {
 }
 
 function shuffleCard() {
-  matched = 0;
+  killerCount = 0;
+  doorKey = 0;
   disableDeck = false;
   cardOne = cardTwo = "";
-  let arr = ['door', 'freddy', 'mm', 'jason', 'pinhead', 'pennywise', 'freddy', 'mm', 'jason', 'pinhead', 'door', 'pennywise'];
+  let arr = ['door', 'freddy', 'mm', 'jason', 'pinhead', 'pennywise', 'freddy', 'mm', 'jason', 'pinhead', 'key', 'pennywise'];
   arr.sort(() => Math.random() > 0.5 ? 1 : -1);
   cards.forEach((card, i) => {
     card.classList.remove("flip");
