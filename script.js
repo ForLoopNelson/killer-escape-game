@@ -87,7 +87,7 @@ function matchCards(img1, img2) {
   console.log(name1,name2)
   if (name1 === name2) {
     killerCount++;
-    if (killerCount == 2) {
+    if (killerCount == 1) {
       setTimeout(() => {
         alert(`You got caught by ${name1}!`);
         resetGame();
