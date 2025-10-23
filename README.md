@@ -2,14 +2,14 @@
 
 # Killer Escape Memory card game
 
-## Find two doors to escape. Match two tiles with a horror Villain (Jason, Freddy, Pinhead, or Michael Myers) and be captured!
+## Find the door and key to escape. Match two tiles with a horror Villain (Jason, Freddy, Pinhead, or Michael Myers) and be captured!
 
 ### Tasks:
 -- Fix mobile design
 
 -- Change card color on hover
 
--- Set logic to show tiles first and then flip
+-- Set logic to keep villain tiles shown to make it harder. And maybe have it reshuffle tiles if villains not match.
 
--- Change to match doors and any villain and show count for each
+
 
