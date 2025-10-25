@@ -1,5 +1,14 @@
+const killers = ['freddy', 'mm', 'jason', 'pinhead', 'pennywise']
+let killerCount = 
+  {
+  freddy: 0,
+  jason: 0,
+  pinhead: 0,
+  pennywise: 0
+}
+
+
 const cards = document.querySelectorAll(".card");
-let  killerCount = 0;
 let doorKey = 0
 let moveCounter = 0;
 let maxMoves = 12; 
