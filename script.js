@@ -3,6 +3,7 @@ let killerCount =
   {
   freddy: 0,
   jason: 0,
+  mm: 0,
   pinhead: 0,
   pennywise: 0
 }
@@ -69,13 +70,14 @@ function resetGame() {
 }
 
 function flipCard({ target: clickedCard }) {
-   if (!timer.isRunning) {
+  if (!timer.isRunning) {
     startTimer();
     timer.isRunning = true;
   }
 
   if (cardOne !== clickedCard && !disableDeck) {
     clickedCard.classList.add("flip");
+    
     if (!cardOne) {
       cardOne = clickedCard;
       return;
@@ -85,23 +87,44 @@ function flipCard({ target: clickedCard }) {
     let cardOneImg = cardOne.querySelector(".back-view img").src,
       cardTwoImg = cardTwo.querySelector(".back-view img").src;
     matchCards(cardOneImg, cardTwoImg);
-    updateMoves(); // Increment move counter after each pair is checked
+    updateMoves();
+    
+    // After matchCards, count all flipped killer cards
+    setTimeout(() => {
+      // Reset counts
+      for (let killer in killerCount) killerCount[killer] = 0;
+      
+      // Count all flipped cards
+      const flippedCards = document.querySelectorAll(".card.flip");
+      flippedCards.forEach(card => {
+        const imgSrc = card.querySelector(".back-view img").src;
+        const cardName = imgSrc.split("/").pop().split(".")[0];
+        if (killers.includes(cardName)) {
+          killerCount[cardName]++;
+        }
+      });
+      
+      console.log("Killer counts:", killerCount);
+      
+      // Check how many killers have 2 cards showing (pairs)
+      const killersWithPairs = Object.values(killerCount).filter(count => count >= 2).length;
+      console.log("Killers with pairs showing:", killersWithPairs);
+      
+      if (killersWithPairs >= 2) {
+        alert("You got caught!");
+        resetGame();
+      }
+    }, 100);
   }
 }
-
 function matchCards(img1, img2) {
   
-  const name1 = img1.split("/").pop().split(".")[0]; // e.g. "door"
-  const name2 = img2.split("/").pop().split(".")[0]; // e.g. "key"
-  console.log(name1,name2)
-  if (name1 === name2) {
-    killerCount++;
-    if (killerCount == 1) {
-      setTimeout(() => {
-        alert(`You got caught by ${name1}!`);
-        resetGame();
-      }, 500);
-    }
+  const name1 = img1.split("/").pop().split(".")[0];
+  const name2 = img2.split("/").pop().split(".")[0];
+  console.log(name1, name2);
+  
+   if (name1 === name2 && killers.includes(name1)) {
+    // Matched a killer pair - just keep them flipped
     cardOne.removeEventListener("click", flipCard);
     cardTwo.removeEventListener("click", flipCard);
     cardOne = cardTwo = "";
@@ -123,21 +146,24 @@ function matchCards(img1, img2) {
     disableDeck = false;
   }
   else {
+    const cardOneIsKiller = killers.includes(name1);
+    const cardTwoIsKiller = killers.includes(name2);
     setTimeout(() => {
       cardOne.classList.add("shake");
       cardTwo.classList.add("shake");
     }, 400);
     setTimeout(() => {
-      cardOne.classList.remove("shake", "flip");
-      cardTwo.classList.remove("shake", "flip");
+      cardOne.classList.remove("shake");
+      cardTwo.classList.remove("shake");
+      if (!cardOneIsKiller) cardOne.classList.remove("flip");
+      if (!cardTwoIsKiller) cardTwo.classList.remove("flip");
       cardOne = cardTwo = "";
       disableDeck = false;
     }, 1200);
   }
 }
-
 function shuffleCard() {
-  killerCount = 0;
+   for (let killer in killerCount) killerCount[killer] = 0;
   doorKey = 0;
   disableDeck = false;
   cardOne = cardTwo = "";
