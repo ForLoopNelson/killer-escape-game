@@ -12,7 +12,7 @@ let killerCount =
 const cards = document.querySelectorAll(".card");
 let doorKey = 0
 let moveCounter = 0;
-let maxMoves = 12; 
+let maxMoves = 10; 
 let timer = {
   seconds: 0,
   minutes: 0,
